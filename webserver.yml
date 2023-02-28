@@ -1,0 +1,21 @@
+- hosts: all
+  tasks:
+    - name: "install apache2 webserver"
+      package:
+        name: httpd
+        state: present
+    - name: "copy web-pages to the document root directory"
+      copy:
+        src: "./index.html"
+        dest: "/var/www/html/"
+    - name: "start the webserver"
+      service:
+        name: "httpd"
+        state: started
+        enabled: true
+    - name: "set firewall rules"
+      firewalld:
+        immediate: yes
+        port: "80/tcp"
+        state: enabled
+        permanent: yes
